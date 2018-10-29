@@ -1,5 +1,5 @@
 # TrekklisterSplitter2
-Splitter trekklisten i henhold til ulike fagforeninger i pdf format og passordbeskytt filene
+Splitter trekklisten i henhold til ulike leverandører i pdf format og passordbeskytt filene
 
 iTextSharp library(https://github.com/itext/itextsharp) is used to read and split PDF pages.
 
