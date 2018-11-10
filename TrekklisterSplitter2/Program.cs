@@ -16,7 +16,7 @@ namespace TrekklisterSplitter2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TrekklisterSplitter2());
+            Application.Run(new frmMainWindow());
         }
     }
 }
