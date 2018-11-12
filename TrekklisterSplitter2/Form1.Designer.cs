@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.TxtSourceFile = new System.Windows.Forms.TextBox();
+            this.txtSourceFile = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.TxtPasswordString = new System.Windows.Forms.TextBox();
-            this.BtnBrowseFilePath = new System.Windows.Forms.Button();
+            this.txtPasswordString = new System.Windows.Forms.TextBox();
+            this.btnBrowseFilePath = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.TxtSavePath = new System.Windows.Forms.TextBox();
-            this.BtnBrowseSavePath = new System.Windows.Forms.Button();
+            this.txtSavePath = new System.Windows.Forms.TextBox();
+            this.btnBrowseSavePath = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // TxtSourceFile
+            // txtSourceFile
             // 
-            this.TxtSourceFile.Location = new System.Drawing.Point(99, 42);
-            this.TxtSourceFile.Name = "TxtSourceFile";
-            this.TxtSourceFile.Size = new System.Drawing.Size(282, 20);
-            this.TxtSourceFile.TabIndex = 0;
+            this.txtSourceFile.Location = new System.Drawing.Point(99, 42);
+            this.txtSourceFile.Name = "txtSourceFile";
+            this.txtSourceFile.Size = new System.Drawing.Size(282, 20);
+            this.txtSourceFile.TabIndex = 0;
             // 
             // btnStart
             // 
@@ -82,27 +82,27 @@
             this.label2.Text = "Passord:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // TxtPasswordString
+            // txtPasswordString
             // 
-            this.TxtPasswordString.Location = new System.Drawing.Point(99, 111);
-            this.TxtPasswordString.Name = "TxtPasswordString";
-            this.TxtPasswordString.Size = new System.Drawing.Size(282, 20);
-            this.TxtPasswordString.TabIndex = 4;
+            this.txtPasswordString.Location = new System.Drawing.Point(99, 111);
+            this.txtPasswordString.Name = "txtPasswordString";
+            this.txtPasswordString.Size = new System.Drawing.Size(282, 20);
+            this.txtPasswordString.TabIndex = 4;
             // 
-            // BtnBrowseFilePath
+            // btnBrowseFilePath
             // 
-            this.BtnBrowseFilePath.BackColor = System.Drawing.Color.Transparent;
-            this.BtnBrowseFilePath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.BtnBrowseFilePath.FlatAppearance.BorderSize = 0;
-            this.BtnBrowseFilePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnBrowseFilePath.ForeColor = System.Drawing.Color.Transparent;
-            this.BtnBrowseFilePath.Image = global::TrekklisterSplitter2.Properties.Resources.Folder_16x;
-            this.BtnBrowseFilePath.Location = new System.Drawing.Point(384, 39);
-            this.BtnBrowseFilePath.Name = "BtnBrowseFilePath";
-            this.BtnBrowseFilePath.Size = new System.Drawing.Size(24, 23);
-            this.BtnBrowseFilePath.TabIndex = 6;
-            this.BtnBrowseFilePath.UseVisualStyleBackColor = false;
-            this.BtnBrowseFilePath.Click += new System.EventHandler(this.BtnBrowseFilePath_Click);
+            this.btnBrowseFilePath.BackColor = System.Drawing.Color.Transparent;
+            this.btnBrowseFilePath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnBrowseFilePath.FlatAppearance.BorderSize = 0;
+            this.btnBrowseFilePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBrowseFilePath.ForeColor = System.Drawing.Color.Transparent;
+            this.btnBrowseFilePath.Image = global::TrekklisterSplitter2.Properties.Resources.Folder_16x;
+            this.btnBrowseFilePath.Location = new System.Drawing.Point(384, 39);
+            this.btnBrowseFilePath.Name = "btnBrowseFilePath";
+            this.btnBrowseFilePath.Size = new System.Drawing.Size(24, 23);
+            this.btnBrowseFilePath.TabIndex = 6;
+            this.btnBrowseFilePath.UseVisualStyleBackColor = false;
+            this.btnBrowseFilePath.Click += new System.EventHandler(this.btnBrowseFilePath_Click);
             // 
             // btnCancel
             // 
@@ -127,28 +127,28 @@
             this.label3.Text = "Lagre:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // TxtSavePath
+            // txtSavePath
             // 
-            this.TxtSavePath.Location = new System.Drawing.Point(99, 68);
-            this.TxtSavePath.Name = "TxtSavePath";
-            this.TxtSavePath.Size = new System.Drawing.Size(282, 20);
-            this.TxtSavePath.TabIndex = 9;
-            this.TxtSavePath.TextChanged += new System.EventHandler(this.TxtSavePath_TextChanged);
+            this.txtSavePath.Location = new System.Drawing.Point(99, 68);
+            this.txtSavePath.Name = "txtSavePath";
+            this.txtSavePath.Size = new System.Drawing.Size(282, 20);
+            this.txtSavePath.TabIndex = 9;
+            this.txtSavePath.TextChanged += new System.EventHandler(this.txtSavePath_TextChanged);
             // 
-            // BtnBrowseSavePath
+            // btnBrowseSavePath
             // 
-            this.BtnBrowseSavePath.BackColor = System.Drawing.Color.Transparent;
-            this.BtnBrowseSavePath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.BtnBrowseSavePath.FlatAppearance.BorderSize = 0;
-            this.BtnBrowseSavePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnBrowseSavePath.ForeColor = System.Drawing.Color.Transparent;
-            this.BtnBrowseSavePath.Image = global::TrekklisterSplitter2.Properties.Resources.Folder_16x;
-            this.BtnBrowseSavePath.Location = new System.Drawing.Point(384, 68);
-            this.BtnBrowseSavePath.Name = "BtnBrowseSavePath";
-            this.BtnBrowseSavePath.Size = new System.Drawing.Size(24, 23);
-            this.BtnBrowseSavePath.TabIndex = 11;
-            this.BtnBrowseSavePath.UseVisualStyleBackColor = false;
-            this.BtnBrowseSavePath.Click += new System.EventHandler(this.BtnBrowseSavePath_Click);
+            this.btnBrowseSavePath.BackColor = System.Drawing.Color.Transparent;
+            this.btnBrowseSavePath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnBrowseSavePath.FlatAppearance.BorderSize = 0;
+            this.btnBrowseSavePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBrowseSavePath.ForeColor = System.Drawing.Color.Transparent;
+            this.btnBrowseSavePath.Image = global::TrekklisterSplitter2.Properties.Resources.Folder_16x;
+            this.btnBrowseSavePath.Location = new System.Drawing.Point(384, 68);
+            this.btnBrowseSavePath.Name = "btnBrowseSavePath";
+            this.btnBrowseSavePath.Size = new System.Drawing.Size(24, 23);
+            this.btnBrowseSavePath.TabIndex = 11;
+            this.btnBrowseSavePath.UseVisualStyleBackColor = false;
+            this.btnBrowseSavePath.Click += new System.EventHandler(this.btnBrowseSavePath_Click);
             // 
             // frmMainWindow
             // 
@@ -156,19 +156,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(467, 213);
-            this.Controls.Add(this.BtnBrowseSavePath);
+            this.Controls.Add(this.btnBrowseSavePath);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.TxtSavePath);
+            this.Controls.Add(this.txtSavePath);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.BtnBrowseFilePath);
+            this.Controls.Add(this.btnBrowseFilePath);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.TxtPasswordString);
+            this.Controls.Add(this.txtPasswordString);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.TxtSourceFile);
+            this.Controls.Add(this.txtSourceFile);
             this.Name = "frmMainWindow";
             this.Text = "Trekklister Splitter 2";
-            this.Load += new System.EventHandler(this.FrmMainWindow_Load);
+            this.Load += new System.EventHandler(this.frmMainWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,16 +176,16 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox TxtSourceFile;
+        private System.Windows.Forms.TextBox txtSourceFile;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox TxtPasswordString;
-        private System.Windows.Forms.Button BtnBrowseFilePath;
+        private System.Windows.Forms.TextBox txtPasswordString;
+        private System.Windows.Forms.Button btnBrowseFilePath;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox TxtSavePath;
-        private System.Windows.Forms.Button BtnBrowseSavePath;
+        private System.Windows.Forms.TextBox txtSavePath;
+        private System.Windows.Forms.Button btnBrowseSavePath;
     }
 }
 

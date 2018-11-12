@@ -21,12 +21,12 @@ namespace TrekklisterSplitter2
             InitializeComponent();
         }
 
-        private void FrmMainWindow_Load(object sender, EventArgs e)
+        private void frmMainWindow_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void BtnBrowseFilePath_Click(object sender, EventArgs e)
+        private void btnBrowseFilePath_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.CheckFileExists = true;
@@ -36,20 +36,20 @@ namespace TrekklisterSplitter2
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                TxtSourceFile.Text = openFileDialog.FileName;
+                txtSourceFile.Text = openFileDialog.FileName;
             }
         }
 
-        private void BtnBrowseSavePath_Click(object sender, EventArgs e)
+        private void btnBrowseSavePath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();           
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                TxtSavePath.Text = folderBrowserDialog.SelectedPath;
+                txtSavePath.Text = folderBrowserDialog.SelectedPath;
             }
         }
 
-        private void TxtSavePath_TextChanged(object sender, EventArgs e)
+        private void txtSavePath_TextChanged(object sender, EventArgs e)
         {
             
         }
@@ -66,46 +66,50 @@ namespace TrekklisterSplitter2
             btnCancel.Enabled = false;
 
             // Source file path
-            string sourcePdfPath = TxtSourceFile.Text;
+            string sourcePdfPath = txtSourceFile.Text;
 
             // Output file path
-            System.IO.Directory.CreateDirectory(TxtSavePath.Text);
+            System.IO.Directory.CreateDirectory(txtSavePath.Text);
             string extension = ".pdf";
             string outputPdfPath = string.Empty;
 
             // Starting page number
             int pageNumber = 1;
 
-            
-            
+            PdfReader reader = null;
+            Document sourceDocument = null;
+            PdfCopy pdfCopyProvider = null;
+            PdfImportedPage importedPage = null;
+
+            try
+            {
+                   
+
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                throw ex;
+            }
+
         }
 
-        public List<String> ReadPdfFile(string sourceFileName, int pageIndex)
+        public string ReadPdfFile(string sourceFileName, int pageIndex)
         {
-            string searchText1 = "Side";
-            String searchText2 = "Lønnart";    
-
-            List<string> searches = new List<string>();
+            StringBuilder pageText = new StringBuilder();
             if (File.Exists(sourceFileName))
             { 
                 PdfReader pdfReader = new PdfReader(sourceFileName);
                 ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
                 string currentPageText = PdfTextExtractor.GetTextFromPage(pdfReader, pageIndex, strategy);
-                if (currentPageText.Contains(searchText1))
-                {
-                        
-                }
-                else if(currentPageText.Contains(searchText2))
-                {
 
-                }
+                currentPageText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
+                pageText.Append(currentPageText);
 
                 pdfReader.Close();
             }
 
-            return searches;
+            return pageText.ToString();
         }
-
-        
     }
 }
