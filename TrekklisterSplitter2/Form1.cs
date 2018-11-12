@@ -69,7 +69,7 @@ namespace TrekklisterSplitter2
             string sourcePdfPath = txtSourceFile.Text;
 
             // Output file path
-            System.IO.Directory.CreateDirectory(txtSavePath.Text);
+            //System.IO.Directory.CreateDirectory(txtSavePath.Text);
             string extension = ".pdf";
             string outputPdfPath = string.Empty;
 
@@ -83,7 +83,30 @@ namespace TrekklisterSplitter2
 
             try
             {
-                   
+                // Intialize a new PdfReader instance with the contents of the source Pdf file
+                reader = new PdfReader(sourcePdfPath);
+
+                // Capture the correct size and orientation for the page
+                sourceDocument = new Document(reader.GetPageSizeWithRotation(pageNumber));
+
+                string currentPageText;
+                currentPageText = ReadPdfFile(sourcePdfPath, 1);
+
+
+
+                System.Console.Write(currentPageText);
+
+                /*
+                for (int i = pageNumber; i < reader.NumberOfPages + 1; i++)
+                {
+
+                }
+                */
+
+                sourceDocument.Close();
+                reader.Close();
+
+                System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
 
             }
             catch (Exception ex)
@@ -92,6 +115,9 @@ namespace TrekklisterSplitter2
                 throw ex;
             }
 
+            // Enabled button
+            btnStart.Enabled = true;
+            btnCancel.Enabled = true;
         }
 
         public string ReadPdfFile(string sourceFileName, int pageIndex)
@@ -103,7 +129,7 @@ namespace TrekklisterSplitter2
                 ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
                 string currentPageText = PdfTextExtractor.GetTextFromPage(pdfReader, pageIndex, strategy);
 
-                currentPageText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentText)));
+                currentPageText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentPageText)));
                 pageText.Append(currentPageText);
 
                 pdfReader.Close();
