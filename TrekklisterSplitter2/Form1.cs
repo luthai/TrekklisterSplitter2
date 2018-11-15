@@ -11,6 +11,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System.IO;
+using System.Diagnostics;
 
 namespace TrekklisterSplitter2
 {
@@ -92,9 +93,14 @@ namespace TrekklisterSplitter2
                 string currentPageText;
                 currentPageText = ReadPdfFile(sourcePdfPath, 1);
 
+                List<string> stringList = new List<string>();
+                stringList = GetKeyText(currentPageText, GetLastLineIndex(currentPageText));
+                for (int idx = 0; idx < stringList.Count; ++idx)
+                {
+                    Debug.Print(stringList[idx]);
+                }
+                
 
-
-                System.Console.Write(currentPageText);
 
                 /*
                 for (int i = pageNumber; i < reader.NumberOfPages + 1; i++)
@@ -107,7 +113,6 @@ namespace TrekklisterSplitter2
                 reader.Close();
 
                 System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
-
             }
             catch (Exception ex)
             {
@@ -136,6 +141,44 @@ namespace TrekklisterSplitter2
             }
 
             return pageText.ToString();
+        }
+
+        public int GetLastLineIndex(string sourceText)
+        {
+            using (StringReader stringReader = new StringReader(sourceText))
+            {
+                int lastLineIndex = 0;
+                string line;
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    lastLineIndex++;
+                }
+
+                Debug.Print(lastLineIndex.ToString());
+                return lastLineIndex;
+            }
+        }
+
+        public List<string> GetKeyText(string sourceText, int lastIndex)
+        {
+            using (StringReader stringReader = new StringReader(sourceText))
+            {
+                int count = 0;
+                string line2;
+                int searchIndex1 = lastIndex - 19; //Lønnart
+                int searchIndex2 = lastIndex - 5; //Side
+                List<string> strList = new List<string>();
+                while ((line2 = stringReader.ReadLine()) != null)
+                {         
+                    count++;
+                    if (count == searchIndex1 || count == searchIndex2)
+                    {
+                        strList.Add(line2);
+                    }
+                }
+
+                return strList;
+            }
         }
     }
 }
