@@ -93,14 +93,13 @@ namespace TrekklisterSplitter2
                 string currentPageText;
                 currentPageText = ReadPdfFile(sourcePdfPath, 1);
 
+                string leverandor;
                 List<string> stringList = new List<string>();
                 stringList = GetKeyText(currentPageText, GetLastLineIndex(currentPageText));
-                for (int idx = 0; idx < stringList.Count; ++idx)
-                {
-                    Debug.Print(stringList[idx]);
-                }
-                
+                leverandor = stringList[0];
 
+                string page = stringList[1];
+                Debug.Print(GetTotalPageNumber(page).ToString());
 
                 /*
                 for (int i = pageNumber; i < reader.NumberOfPages + 1; i++)
@@ -112,7 +111,7 @@ namespace TrekklisterSplitter2
                 sourceDocument.Close();
                 reader.Close();
 
-                System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
+                //System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
             }
             catch (Exception ex)
             {
@@ -154,7 +153,6 @@ namespace TrekklisterSplitter2
                     lastLineIndex++;
                 }
 
-                Debug.Print(lastLineIndex.ToString());
                 return lastLineIndex;
             }
         }
@@ -179,6 +177,24 @@ namespace TrekklisterSplitter2
 
                 return strList;
             }
+        }
+
+        public int GetTotalPageNumber(string sourceString)
+        {
+            int totalPageNumber = 0;
+            string strTotalPageNumber;
+            var splitPage = sourceString.Split('/');
+
+            strTotalPageNumber = splitPage[1];
+
+            if (!Int32.TryParse(strTotalPageNumber, out totalPageNumber))
+            {
+                MessageBox.Show("Error: Kunne ikke finne side nummer til leverandør.");
+                Application.Exit();
+            }
+           
+
+            return totalPageNumber;
         }
     }
 }
