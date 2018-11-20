@@ -70,12 +70,35 @@ namespace TrekklisterSplitter2
             string sourcePdfPath = txtSourceFile.Text;
 
             // Output file path
-            //System.IO.Directory.CreateDirectory(txtSavePath.Text);
+            string outputFolderName = "Trekklister";
             string extension = ".pdf";
+            string outputPdfFolder = System.IO.Path.Combine(txtSavePath.Text, outputFolderName);
             string outputPdfPath = string.Empty;
+            /*/
+            // Create folder to contain pdf files
+            if (txtSavePath.Text == "")
+            {
+                MessageBox.Show("Error: Velg lagringslokasjon.");
+
+                // Enabled button
+                btnStart.Enabled = true;
+                btnCancel.Enabled = true;
+
+                return;
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(outputPdfFolder);
+            }
+            */
 
             // Starting page number
-            int pageNumber = 1;
+            int startPage = 1;
+
+            string currentPageText = string.Empty;
+            string leverandor = string.Empty;
+            int totalPageNumber = 0;
+            Tuple<int, bool> tuple = new Tuple<int, bool>(0, false);
 
             PdfReader reader = null;
             Document sourceDocument = null;
@@ -84,70 +107,110 @@ namespace TrekklisterSplitter2
 
             try
             {
-                // Intialize a new PdfReader instance with the contents of the source Pdf file
-                reader = new PdfReader(sourcePdfPath);
-
-                // Capture the correct size and orientation for the page
-                sourceDocument = new Document(reader.GetPageSizeWithRotation(pageNumber));
-
-                string currentPageText;
-                currentPageText = ReadPdfFile(sourcePdfPath, 1);
-
-                string leverandor;
-                List<string> stringList = new List<string>();
-                stringList = GetKeyText(currentPageText, GetLastLineIndex(currentPageText));
-                leverandor = stringList[0];
-
-                string page = stringList[1];
-                Debug.Print(GetTotalPageNumber(page).ToString());
-
-                /*
-                for (int i = pageNumber; i < reader.NumberOfPages + 1; i++)
+                if (File.Exists(sourcePdfPath))
                 {
+                    // Intialize a new PdfReader instance with the contents of the source Pdf file
+                    reader = new PdfReader(sourcePdfPath);
 
+                    // Capture the correct size and orientation for the page
+                    sourceDocument = new Document(reader.GetPageSizeWithRotation(startPage));
+                    
+                    List<string> stringList = new List<string>();
+                    for (int i = startPage; i < reader.NumberOfPages + 1; i++)
+                    {
+                        currentPageText = ReadPdfFile(sourcePdfPath, i);
+                        tuple = GetLastLineIndex(currentPageText);
+                        stringList = GetKeyText(currentPageText, tuple.Item1, tuple.Item2);
+                        leverandor = stringList[0];
+
+                        totalPageNumber = GetTotalPageNumber(stringList[1]);
+
+                        //outputPdfPath = System.IO.Path.Combine(outputPdfFolder, leverandor + extension);
+
+                        Debug.Print("Leverandør: {0}: Startside: {1} Totalside: {2}", leverandor, i, totalPageNumber.ToString());
+
+                        stringList.Clear();
+                        i = i + (totalPageNumber - 1);
+                    }
+                    
+                   
+
+                    sourceDocument.Close();
+                    reader.Close();
+                    
+                    //System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
+
+                    // Enabled button
+                    btnStart.Enabled = true;
+                    btnCancel.Enabled = true;
                 }
-                */
+                else
+                {
+                    MessageBox.Show("Error: Trekkliste fil ikke gyldig.");
 
-                sourceDocument.Close();
-                reader.Close();
+                    // Enabled button
+                    btnStart.Enabled = true;
+                    btnCancel.Enabled = true;
 
-                //System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
+                    return;
+                }
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
                 throw ex;
             }
-
-            // Enabled button
-            btnStart.Enabled = true;
-            btnCancel.Enabled = true;
         }
-
+         
         public string ReadPdfFile(string sourceFileName, int pageIndex)
         {
             StringBuilder pageText = new StringBuilder();
-            if (File.Exists(sourceFileName))
-            { 
-                PdfReader pdfReader = new PdfReader(sourceFileName);
-                ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
-                string currentPageText = PdfTextExtractor.GetTextFromPage(pdfReader, pageIndex, strategy);
+            
+            PdfReader pdfReader = new PdfReader(sourceFileName);
+            ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+            string currentPageText = PdfTextExtractor.GetTextFromPage(pdfReader, pageIndex, strategy);
 
-                currentPageText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentPageText)));
-                pageText.Append(currentPageText);
+            currentPageText = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(currentPageText)));
+            pageText.Append(currentPageText);
 
-                pdfReader.Close();
-            }
-
+            pdfReader.Close();
+            
             return pageText.ToString();
         }
 
+        public Tuple<int, bool> GetLastLineIndex(string sourceText)
+        {
+            using (StringReader stringReader = new StringReader(sourceText))
+            {
+                bool onlyOnePage = false;
+                int lastLineIndex = 0;
+                int markLine = 0;
+                string line = string.Empty;
+                while ((line = stringReader.ReadLine()) != null)
+                {
+                    lastLineIndex++;
+                    if (line == ":")
+                    {
+                        markLine = lastLineIndex;
+                    }
+                        
+                }
+                
+                if (lastLineIndex != markLine)
+                {
+                    onlyOnePage = true;
+                }
+
+                return Tuple.Create(lastLineIndex, onlyOnePage);
+            }
+        }
+        /*
         public int GetLastLineIndex(string sourceText)
         {
             using (StringReader stringReader = new StringReader(sourceText))
             {
                 int lastLineIndex = 0;
-                string line;
+                string line = string.Empty;
                 while ((line = stringReader.ReadLine()) != null)
                 {
                     lastLineIndex++;
@@ -156,22 +219,36 @@ namespace TrekklisterSplitter2
                 return lastLineIndex;
             }
         }
-
-        public List<string> GetKeyText(string sourceText, int lastIndex)
+        */
+        public List<string> GetKeyText(string sourceText, int lastIndex, bool rerun)
         {
             using (StringReader stringReader = new StringReader(sourceText))
             {
                 int count = 0;
-                string line2;
-                int searchIndex1 = lastIndex - 19; //Lønnart
-                int searchIndex2 = lastIndex - 5; //Side
+                string line = string.Empty;
+                int searchIndex1;
+                int searchIndex2;
+
+                if (!rerun)
+                {
+                    // Several pages source
+                    searchIndex1 = lastIndex - 19; // Leverandør
+                    searchIndex2 = lastIndex - 5; // Side
+                }
+                else
+                {
+                    // One page source
+                    searchIndex1 = lastIndex - 24; // Leverandør
+                    searchIndex2 = lastIndex - 10; // Side
+                }
+                
                 List<string> strList = new List<string>();
-                while ((line2 = stringReader.ReadLine()) != null)
+                while ((line = stringReader.ReadLine()) != null)
                 {         
                     count++;
                     if (count == searchIndex1 || count == searchIndex2)
                     {
-                        strList.Add(line2);
+                        strList.Add(line);
                     }
                 }
 
@@ -182,18 +259,25 @@ namespace TrekklisterSplitter2
         public int GetTotalPageNumber(string sourceString)
         {
             int totalPageNumber = 0;
-            string strTotalPageNumber;
-            var splitPage = sourceString.Split('/');
+            string strTotalPageNumber = string.Empty;
+            string strStartPageNumber = string.Empty;
+            var splitPage = sourceString.Split(' ', '/');
 
-            strTotalPageNumber = splitPage[1];
+            strStartPageNumber = splitPage[1];
+            strTotalPageNumber = splitPage[4];
+
+            if (strStartPageNumber != "1")
+            {
+                MessageBox.Show("Error: Finner ikke start side 1 til leverandør.");
+                Application.Exit();
+            }
 
             if (!Int32.TryParse(strTotalPageNumber, out totalPageNumber))
             {
-                MessageBox.Show("Error: Kunne ikke finne side nummer til leverandør.");
+                MessageBox.Show("Error: Finner ikke antall sider til leverandør.");
                 Application.Exit();
             }
            
-
             return totalPageNumber;
         }
     }
