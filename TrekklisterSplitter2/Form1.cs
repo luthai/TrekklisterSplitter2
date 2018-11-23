@@ -74,7 +74,7 @@ namespace TrekklisterSplitter2
             string extension = ".pdf";
             string outputPdfFolder = System.IO.Path.Combine(txtSavePath.Text, outputFolderName);
             string outputPdfPath = string.Empty;
-            /*/
+           
             // Create folder to contain pdf files
             if (txtSavePath.Text == "")
             {
@@ -90,15 +90,7 @@ namespace TrekklisterSplitter2
             {
                 System.IO.Directory.CreateDirectory(outputPdfFolder);
             }
-            */
-
-            // Starting page number
-            int startPage = 1;
-
-            string currentPageText = string.Empty;
-            string leverandor = string.Empty;
-            int totalPageNumber = 0;
-            Tuple<int, bool> tuple = new Tuple<int, bool>(0, false);
+            
 
             PdfReader reader = null;
             Document sourceDocument = null;
@@ -109,11 +101,20 @@ namespace TrekklisterSplitter2
             {
                 if (File.Exists(sourcePdfPath))
                 {
+                    // Starting page number
+                    int startPage = 1;
+
                     // Intialize a new PdfReader instance with the contents of the source Pdf file
                     reader = new PdfReader(sourcePdfPath);
 
                     // Capture the correct size and orientation for the page
                     sourceDocument = new Document(reader.GetPageSizeWithRotation(startPage));
+
+                    string currentPageText = string.Empty;
+                    string leverandor = string.Empty;
+                    int totalPageNumber = 0;
+                    int lastPage = 0;
+                    Tuple<int, bool> tuple = new Tuple<int, bool>(0, false);
                     
                     List<string> stringList = new List<string>();
                     for (int i = startPage; i < reader.NumberOfPages + 1; i++)
@@ -122,18 +123,56 @@ namespace TrekklisterSplitter2
                         tuple = GetLastLineIndex(currentPageText);
                         stringList = GetKeyText(currentPageText, tuple.Item1, tuple.Item2);
                         leverandor = stringList[0];
-
                         totalPageNumber = GetTotalPageNumber(stringList[1]);
 
-                        //outputPdfPath = System.IO.Path.Combine(outputPdfFolder, leverandor + extension);
+                        outputPdfPath = System.IO.Path.Combine(outputPdfFolder, leverandor + extension);
 
-                        Debug.Print("Leverandør: {0}: Startside: {1} Totalside: {2}", leverandor, i, totalPageNumber.ToString());
+                        // Initialize an instance of the PdfCopyClass with the source 
+                        // document and an output file stream
+                        pdfCopyProvider = new PdfCopy(sourceDocument, new System.IO.FileStream(outputPdfPath, System.IO.FileMode.Create));
+
+                        sourceDocument.Open();
+
+                        lastPage = i + totalPageNumber - 1;
+                        for (int idx = i; idx < lastPage + 1; ++idx)
+                        {
+                            // Extract the desired page number
+                            importedPage = pdfCopyProvider.GetImportedPage(reader, idx);
+                            pdfCopyProvider.AddPage(importedPage);
+                        }
+                        
 
                         stringList.Clear();
                         i = i + (totalPageNumber - 1);
                     }
                     
                    
+                   /*
+                    List<string> stringList = new List<string>();
+                    currentPageText = ReadPdfFile(sourcePdfPath, 1);
+                    tuple = GetLastLineIndex(currentPageText);
+                    stringList = GetKeyText(currentPageText, tuple.Item1, tuple.Item2);
+                    leverandor = stringList[0];
+                    totalPageNumber = GetTotalPageNumber(stringList[1]);
+
+                    outputPdfPath = System.IO.Path.Combine(outputPdfFolder, leverandor + extension);
+
+                    // Initialize an instance of the PdfCopyClass with the source 
+                    // document and an output file stream
+                    pdfCopyProvider = new PdfCopy(sourceDocument, new System.IO.FileStream(outputPdfPath, System.IO.FileMode.Create));
+
+                    sourceDocument.Open();
+
+                    lastPage = 1 + totalPageNumber - 1;
+                    for (int idx = 1; idx < lastPage + 1; ++idx)
+                    {
+                        // Extract the desired page number
+                        importedPage = pdfCopyProvider.GetImportedPage(reader, idx);
+                        pdfCopyProvider.AddPage(importedPage);
+                    }
+                    */
+
+                    
 
                     sourceDocument.Close();
                     reader.Close();
@@ -186,6 +225,7 @@ namespace TrekklisterSplitter2
                 int lastLineIndex = 0;
                 int markLine = 0;
                 string line = string.Empty;
+
                 while ((line = stringReader.ReadLine()) != null)
                 {
                     lastLineIndex++;
@@ -204,22 +244,7 @@ namespace TrekklisterSplitter2
                 return Tuple.Create(lastLineIndex, onlyOnePage);
             }
         }
-        /*
-        public int GetLastLineIndex(string sourceText)
-        {
-            using (StringReader stringReader = new StringReader(sourceText))
-            {
-                int lastLineIndex = 0;
-                string line = string.Empty;
-                while ((line = stringReader.ReadLine()) != null)
-                {
-                    lastLineIndex++;
-                }
-
-                return lastLineIndex;
-            }
-        }
-        */
+       
         public List<string> GetKeyText(string sourceText, int lastIndex, bool rerun)
         {
             using (StringReader stringReader = new StringReader(sourceText))
