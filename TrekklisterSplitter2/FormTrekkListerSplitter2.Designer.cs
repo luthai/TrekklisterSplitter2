@@ -88,6 +88,7 @@
             this.txtPasswordString.Name = "txtPasswordString";
             this.txtPasswordString.Size = new System.Drawing.Size(282, 20);
             this.txtPasswordString.TabIndex = 4;
+            this.txtPasswordString.TextChanged += new System.EventHandler(this.txtPasswordString_TextChanged);
             // 
             // btnBrowseFilePath
             // 
@@ -133,7 +134,6 @@
             this.txtSavePath.Name = "txtSavePath";
             this.txtSavePath.Size = new System.Drawing.Size(282, 20);
             this.txtSavePath.TabIndex = 9;
-            this.txtSavePath.TextChanged += new System.EventHandler(this.txtSavePath_TextChanged);
             // 
             // btnBrowseSavePath
             // 
