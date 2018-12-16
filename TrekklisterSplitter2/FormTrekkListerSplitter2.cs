@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace TrekklisterSplitter2
 {
@@ -168,7 +167,7 @@ namespace TrekklisterSplitter2
                         }
                     }
 
-                    //System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
+                    System.Windows.Forms.MessageBox.Show("Trekkliste ferdig splittet!!!");
 
                     // Enabled button
                     btnStart.Enabled = true;
