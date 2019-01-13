@@ -88,6 +88,7 @@
             this.txtPasswordString.Name = "txtPasswordString";
             this.txtPasswordString.Size = new System.Drawing.Size(282, 20);
             this.txtPasswordString.TabIndex = 4;
+            this.txtPasswordString.Text = "970540008";
             this.txtPasswordString.TextChanged += new System.EventHandler(this.txtPasswordString_TextChanged);
             // 
             // btnBrowseFilePath

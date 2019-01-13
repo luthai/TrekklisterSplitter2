@@ -51,7 +51,7 @@ namespace TrekklisterSplitter2
 
         private void txtPasswordString_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnStart_Click(object sender, EventArgs e)
